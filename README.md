@@ -1,5 +1,5 @@
 
-A TtpeScript E-commerce platform that allows an admin to Create, View, Update and Delete products. 
+A TpeScript E-commerce platform that allows an admin to Create, View, Update and Delete products. 
 
 Utilises localstorage.
 
