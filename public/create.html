@@ -8,26 +8,50 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <video class="background-video" autoplay muted loop>
+        <source src="/video/ship.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="adminpage">
 
-    <h2>WELCOME BACK TO YOUR DASHBOARD</h2>
-    <h4>Add  product</h4>
+        <div class="headadmin">
+            <h2>WELCOME BACK TO YOUR DASHBOARD</h2>
+            <h4 > Add  product</h4>
+        </div>
 
-    <form action="" class="productForm">
+    <div class="admin">
+
+    <form action="submit" class="productF" id="productForm">
 
         <input type="text"  id="productName" placeholder="Enter Product Name">
         <input type="text"  id="brand" placeholder="Enter Brand Name">
-        <input type="text"  id="price" placeholder="Enter Price">
-        <input type="text"  id="category" placeholder="Enter Category">
+        <input type="number"  id="price" placeholder="Enter Price">
+
+        <select type="text"  id="category" placeholder="Enter Category">
+            <option value="">Select Category</option>
+            <option value="PhonesLaptop">Phones & Laptop</option>
+            <option value="ClothingFashion">Clothing/Fashion</option>
+            <option value="ElectricalAppliances">Electrical Appliances</option>
+            <option value="Furniture">Furniture</option>
+         </select>   
+
         <input type="text"  id="description" placeholder="Description">
         <input type="text" id="imageUrl" placeholder="image">
 
-        <button>ADD Product</button>
+        <input type="submit" value="Create Product" id="productForm">
+
     </form>
 
 
+    <div class="all-products">
 
 
 
-    <script src="/dist/index.js"></script>
+
+    </div>
+ 
+</div>
+    <script src="../dist/index.js"></script>
+
 </body>
 </html>

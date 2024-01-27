@@ -1,5 +1,6 @@
-
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,35 +8,52 @@
     <title></title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <navbar class="navbar">
-    
-    <p>Shop now</p>
 
-    
-        <h1>WUDAN</h1>
+    <div class="video-container">
+        <navbar class="navbar">
+            <h1>WUDAN</h1>
+            <a href="/public/create.html">
+                <h2>Admin</h2>
+            </a>
+            <h3>SHOP NOW</h3>
+            <h2>cart</h2>
+        </navbar>
 
-        <a href="/public/create.html"><h2>Admin</h2></a>
+        <div class="gift">
+            <h1>BlackFRiday</h1>
+            <div class="search">
+                <form action="#">
+                    <input type="text" placeholder="Search  Product" name="search">
+                    <button>
+                        <i class="fa fa-search" style="font-size: 48px;"></i>
+                    </button>
+                </form>
+                <h1>Valentine Offers</h1>
+            </div>
+            <video autoplay muted loop id="background-video">
+                <source src="https://merch.topg.com/wp-content/uploads/sites/2/2024/01/merch-hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="text-overlay">
+                <h1>Where you Shop Matters</h1>
+                <h2>SHOP WITH US FOR EXCLUSIVE MERCHANDISE ALL OVER THE WORLD</h2>
+                <button>shop now</button>
+            </div>
+        </div>
+    </div>
 
-        <h3>LogOut</h3>
-
-        
-
-    </navbar>
-
-    <p>UNwrap black FRiday gifts</p>
-    <p>Valentine Offers</p>
-
-    check our products......
-<!-- display products -->
-<div class="all-products">
-
-    
-</div>
-    
+    <!-- Display products section -->
+    <div class="productsHome" id="producthommy">
 
 
 
-    <script src="/dist/index.js"></script>
+
+    </div>
+
+    <script src="../dist/index.js" ></script>
+
 </body>
+
 </html>
