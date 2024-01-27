@@ -1,0 +1,53 @@
+
+
+/* index page style */
+
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* create.html page styles */
+
+.productForm{
+    max-width: 500px;
+    border: 2px solid yellow;
+    margin: 60px;
+   
+}
+
+.productForm input{
+    width: 30vw;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    margin: 20px auto;
+}
+
+.productbtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
