@@ -1,5 +1,12 @@
 
 
+body{
+
+    margin: 0px;
+    padding: 0px;
+    height: 600vh;
+}
+
 /* index page style */
 
 .navbar{
@@ -187,7 +194,8 @@ select{
 .productsHome{
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    margin: 30px;
-    padding: 20px;
+   margin: 20px;
+   background:whitesmoke;
+
 }
 
