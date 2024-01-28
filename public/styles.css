@@ -5,6 +5,7 @@ body{
     margin: 0px;
     padding: 0px;
     height: 600vh;
+   
 }
 
 /* index page style */
@@ -16,6 +17,14 @@ body{
     color: white;
     
    
+}
+
+.cart{
+    width: 8%;
+    display: flex;
+    float: right;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .gift{
@@ -165,6 +174,17 @@ select{
     z-index: -1;
 }
 
+.shopbtn{
+    background: rgb(196, 196, 118);
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 20px;
+    height: 10vh;
+    cursor: pointer;
+    width: 14vw;
+}
+
 .adminpage {
     position: relative;
     z-index: 1;
@@ -194,8 +214,50 @@ select{
 .productsHome{
     display: grid;
     grid-template-columns: repeat(3,1fr);
-   margin: 20px;
-   background:whitesmoke;
+   /* margin: 20px; */
+   background-color: black;
+   
 
 }
 
+
+.userProduct{
+    margin: 20px;
+    text-align: center;
+    padding: 60px;
+    font-size: 20px;
+    width: 16vw;
+    border-radius: 20px;
+    margin-top: 40px;
+    background:#fff;
+    padding-top: 14px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+
+
+}
+
+.userImg{
+    width: 100%;
+}
+
+.userBtn{
+    background-color: orange;
+    width: 15vw;
+    color: white;
+    font-size: 20px;
+    height: 10vh;
+    border-radius: 20px;
+    border: solid 1px black;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.userPrice{
+    color: orange;
+    font-weight: bold;
+    font-size: 30px;
+
+}

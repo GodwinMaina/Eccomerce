@@ -1,5 +1,5 @@
 
-// Product Form display for Admin
+// Product Form to display for Admin
 let productForm = document.querySelector('#productForm') as HTMLFormElement | null;
 
 
@@ -36,26 +36,25 @@ function deleteProduct(index: number) {
     if (index >= 0 && index < products.length) {
         products.splice(index, 1);
         localStorage.setItem('products', JSON.stringify(products));
-        // Refresh the displayed products
+       
+        // after delete refresh again and call this 
         displayProduct();
-        // instance.postProducts();
     }
 }
 
 
 function editProduct(index: number) {
 
-    console.log("Button edit clicked!");
+    // console.log("Button edit clicked!"); 
     let products = JSON.parse(localStorage.getItem('products') || '[]') as Products[];
 
     if (index >= 0 && index < products.length) {
-
         // Get the current product and remove it from local storage
         const editedProduct = products.splice(index, 1)[0];
         localStorage.setItem('products', JSON.stringify(products));
         displayProduct();
 
-        // edit at the form.
+        // edit at the form populate to form.
         productName.value = editedProduct.productName || '';
         brand.value = editedProduct.brand || '';
         price.value = editedProduct.price || '';
@@ -68,8 +67,7 @@ function editProduct(index: number) {
         // Scroll to the top of the form
         // productForm.scrollIntoView({ behavior: 'smooth' });
     }
-}
-
+};
 
     //display products at Admin page
     function displayProduct() {
@@ -81,11 +79,11 @@ function editProduct(index: number) {
             }
         }
 
-        // Dynamically render products by inner HTML
         let getProducts:Products [] = JSON.parse(localStorage.getItem('products') || '[]') ;
         // console.log(getProducts);
         
         getProducts.forEach((product: Products, index: number) => {
+               // Dynamically render products by inner HTML
             const allProduct = document.createElement('div');
             allProduct.innerHTML = `
             <div class="adminpanel">
@@ -99,9 +97,8 @@ function editProduct(index: number) {
                 <p>Price: ${product.price}</p>
                 <p>Category: ${product.category}</p>
                 <p>Description: ${product.description}</p>
-                <button class="post-button" data-product-index="${index}">Post</button>
                 <button class="post-button" data-product-index="${index}" onclick="editProduct(${index})">edit</button>
-                <button class="delete-button" data-product-index="${index}" onclick="deleteProduct(${index})">delete</button>
+                <button class="post-button" data-product-index="${index}" onclick="deleteProduct(${index})">delete</button>
                 </div>
                 </div>    
             `;
@@ -113,13 +110,12 @@ function editProduct(index: number) {
     }
 
 
-// Event listener to Admin Form
-if (productForm) {
+ // Event listener to Admin Form
+ if (productForm) {
     productForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
         let product = productName.value.trim() !== "" && brand.value.trim() !== "" && price.value.trim() !== "" && category.value.trim() !== "" && description.value.trim() !== "" && imageUrl.value.trim() !== "";
-        
         if (product) {
             let newProduct = {
                 id: productsArray.length + 1,
@@ -139,11 +135,10 @@ if (productForm) {
                 // If productCurrent is null or undefined, it means a new product is being created
                 productsArray.push(newProduct);
             }
-
-            // Save to local storage
+            // Save to local storage what is in form
             localStorage.setItem("products", JSON.stringify(productsArray));
 
-            // Clear form fields
+            // Clear form fields after save
             productName.value = "";
             brand.value = "";
             price.value = "";
@@ -158,6 +153,7 @@ if (productForm) {
 
 displayProduct();
 
+//display to user products from local storage
 function displayHome() {
     let productHomepage = document.getElementById("productHomepage") as HTMLDivElement | null;
 
@@ -166,24 +162,24 @@ function displayHome() {
         productHomepage.innerHTML = ''; 
 
         let products: Products[] = JSON.parse(localStorage.getItem('products') || '[]') as Products[];
-
-        // Clear existing elements
+        // Clear existing elements if exist but none
         for (const product of products) {
             const productElement = document.createElement('div');
-            productElement.innerHTML = `
 
-                <div class="user-product">
+            productElement.innerHTML = `
+                <div class="userProduct">
                     <img class="userImg" src="${product.imageUrl}" alt="Product Image">
-                    <h3>${product.productName}</h3>
-                    <p>Brand: ${product.brand}</p>
-                    <p>Price: ${product.price}</p>
+                    <h2>${product.productName}</h2>
+                    <p class="userPrice">$ ${product.price}</p>
+                    <!-- 
+                    <p class="userBrand" >Brand: ${product.brand}</p>
                     <p>Category: ${product.category}</p>
-                    <p>Description: ${product.description}</p>
+                    -->
+                    <h3>${product.description}</h3>
+                    <button class="userBtn">Buy Now</button>
                 </div>
                 
             `;
-
-            // Append the productElement to productHomepage
             productHomepage.appendChild(productElement);
         }
     } 
@@ -192,10 +188,23 @@ function displayHome() {
         }
 }
 
-// Call displayHome to render products on the homepage
+  // Call displayHome to render products on the homepage
+displayHome();
 
-    // Your entire script here
 
-    // Call displayHome to render products on the homepage
-    displayHome();
 
+//scroll to product div by click shop now
+const scrollBtn = document.querySelector('.shopbtn') as HTMLElement | null;
+const target = document.getElementById('productHomepage') as HTMLElement | null;
+    
+if (scrollBtn && target) {
+    scrollBtn.addEventListener('click', function() {
+                // Scroll to the target div
+        target.scrollIntoView({ behavior: 'smooth' });
+            });
+
+           
+        } else {
+            console.error("Error: Could not find one or more elements in the DOM.");
+        }
+    
