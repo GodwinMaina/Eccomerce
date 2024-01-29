@@ -85,6 +85,7 @@ function editProduct(index: number) {
         getProducts.forEach((product: Products, index: number) => {
                // Dynamically render products by inner HTML
             const allProduct = document.createElement('div');
+        
             allProduct.innerHTML = `
             <div class="adminpanel">
            <div>
@@ -169,14 +170,15 @@ function displayHome() {
             productElement.innerHTML = `
                 <div class="userProduct">
                     <img class="userImg" src="${product.imageUrl}" alt="Product Image">
-                    <h2>${product.productName}</h2>
+                    <h2 class="orderName">${product.productName}</h2>
                     <p class="userPrice">$ ${product.price}</p>
+                    <p class="userPrice">id ${product.id}</p>
                     <!-- 
                     <p class="userBrand" >Brand: ${product.brand}</p>
                     <p>Category: ${product.category}</p>
                     -->
                     <h3>${product.description}</h3>
-                    <button class="userBtn">Buy Now</button>
+                    <button class="userBtn" onclick="addToCart(${product.id})">Buy Now</button>
                 </div>
                 
             `;
@@ -190,6 +192,59 @@ function displayHome() {
 
   // Call displayHome to render products on the homepage
 displayHome();
+
+
+
+//cart functionality
+
+let cart:any[] = [];
+
+let cartBtn = document.querySelector('.userBtn') as HTMLButtonElement
+
+let a = document.querySelector('.orderName') as HTMLElement;
+let b = document.querySelector('.userPrice') as HTMLElement;
+
+function addToCart(){
+
+    let order = {
+
+        name:a.textContent,
+        price:b.textContent
+    }
+
+    cart.push(order);
+
+    localStorage.setItem('orders',JSON.stringify(cart));
+
+   
+
+}
+
+cartBtn.addEventListener('click',function(){
+
+    addToCart();
+
+})
+
+
+
+    // let selected = products.find(product => product.id === productId);
+
+    // if (selected) {
+    //     // Add the selected product to the cart
+    //     cart.push(selected);
+
+    //     // Update the cart display
+    //     updateCartDisplay();
+
+    // } else {
+    //     console.error('Product not found');
+    // }
+
+
+
+
+
 
 
 
@@ -208,3 +263,14 @@ if (scrollBtn && target) {
             console.error("Error: Could not find one or more elements in the DOM.");
         }
     
+
+
+        let cartContainer = document.getElementById('cartContainer');
+
+        let cartImage = document.querySelector('.cart');      
+        if (cartImage) {
+            // You can manipulate the cart image element here if needed
+            console.log('Cart image found:', cartImage);
+        } else {
+            console.error('Cart image not found');
+        }
