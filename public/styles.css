@@ -261,3 +261,23 @@ select{
     font-size: 30px;
 
 }
+
+.cart{
+    font-size: 45px;
+    margin-right: -8rem;
+}
+
+#cart-count{
+    color: orange;
+    position: absolute;
+    left:80rem;
+    top: -4px;
+  
+    
+}
+
+.cartIcon{
+    font-size: 50px;
+    position: relative;
+    
+}

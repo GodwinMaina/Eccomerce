@@ -178,7 +178,7 @@ function displayHome() {
                     <p>Category: ${product.category}</p>
                     -->
                     <h3>${product.description}</h3>
-                    <button class="userBtn" onclick="addToCart(${product.id})">Buy Now</button>
+                    <button class="userBtn"  data-id="${product.id}" onclick="addToCart()">Buy Now</button>
                 </div>
                 
             `;
@@ -197,55 +197,55 @@ displayHome();
 
 //cart functionality
 
-let cart:any[] = [];
+// products.forEach((product: Products, index: number)=>{
 
-let cartBtn = document.querySelector('.userBtn') as HTMLButtonElement
+//     let name=Product
+// })
 
-let a = document.querySelector('.orderName') as HTMLElement;
-let b = document.querySelector('.userPrice') as HTMLElement;
+function addToCart(productId:number) {
+    // Retrieve the existing cart from local storage
+    let cart = JSON.parse(localStorage.getItem('orders') || '[]');
 
-function addToCart(){
+    let products = JSON.parse(localStorage.getItem('products') || '[]');
 
-    let order = {
+    // Check if the product is already in the cart
+    const existingItem = cart.find((item:Products) => item.id === productId);
 
-        name:a.textContent,
-        price:b.textContent
+    if (existingItem) {
+        // If the product is already in the cart, you may want to update quantity or take appropriate action
+        console.log('Product already in cart:', existingItem);
+    } else {
+        // Find the clicked product based on productId
+        const clickedProduct = products.find((product:Products) => product.id === productId);
+
+        if (clickedProduct) {
+            const order = {
+                id: clickedProduct.id,
+                name: clickedProduct.productName,
+                price: clickedProduct.price
+            };
+
+            // Add the new item to the existing cart
+            cart.push(order);
+
+            // Store the updated cart back in local storage
+            localStorage.setItem('orders', JSON.stringify(cart));
+        }
     }
-
-    cart.push(order);
-
-    localStorage.setItem('orders',JSON.stringify(cart));
-
-   
-
 }
 
-cartBtn.addEventListener('click',function(){
-
-    addToCart();
-
-})
 
 
-
-    // let selected = products.find(product => product.id === productId);
-
-    // if (selected) {
-    //     // Add the selected product to the cart
-    //     cart.push(selected);
-
-    //     // Update the cart display
-    //     updateCartDisplay();
-
-    // } else {
-    //     console.error('Product not found');
-    // }
-
-
-
-
-
-
+// Add event listeners dynamically to each button
+document.querySelectorAll('.userBtn').forEach(function (button: Element) {
+    button.addEventListener('click', function (this: HTMLButtonElement) {
+        let productIdString = this.getAttribute('data-id');
+        if (productIdString) {
+            let productId = parseInt(productIdString, 10);
+            addToCart(productId);
+        }
+    });
+});
 
 
 //scroll to product div by click shop now
@@ -274,3 +274,104 @@ if (scrollBtn && target) {
         } else {
             console.error('Cart image not found');
         }
+
+
+
+        
+
+
+        // Function to update the UI with cart count and added products
+function updateCartUI() {
+    let cart = JSON.parse(localStorage.getItem('orders') || '[]');
+
+    // Update cart count
+    const cartCountElement = document.getElementById('cart-count') as HTMLElement;
+    cartCountElement.textContent = cart.length.toString();
+
+    // Display added products
+    const addedProductsContainer = document.createElement('div') as HTMLElement;
+    addedProductsContainer.innerHTML = '';
+
+    cart.forEach((order:Products) => {
+        const productElement = document.createElement('div');
+        productElement.textContent = `${order.productName} - $${order.price}`;
+        addedProductsContainer.appendChild(productElement);
+    });
+}
+
+// Function to add product to the cart
+function addToCarts(productId:number) {
+    let cart = JSON.parse(localStorage.getItem('orders') || '[]');
+    let products = JSON.parse(localStorage.getItem('products') || '[]');
+
+    const existingItem = cart.find((item:Products) => item.id === productId);
+
+    if (existingItem) {
+        console.log('Product already in cart:', existingItem);
+    } else {
+        const clickedProduct = products.find((product:Products) => product.id === productId);
+
+        if (clickedProduct) {
+            const order = {
+                id: clickedProduct.id,
+                name: clickedProduct.productName,
+                price: clickedProduct.price
+            };
+
+            cart.push(order);
+            localStorage.setItem('orders', JSON.stringify(cart));
+
+            // Update the UI after adding to the cart
+            updateCartUI();
+        }
+    }
+}
+
+// Initial UI update on page load
+updateCartUI();
+
+// Add event listeners dynamically to each button
+document.querySelectorAll('.userBtn').forEach(function (button) {
+    button.addEventListener('click', function (this: HTMLButtonElement) {
+        let productIdString = this.getAttribute('data-id');
+        if (productIdString) {
+            let productId = parseInt(productIdString, 10);
+            addToCarts(productId);
+        }
+    });
+});
+
+
+
+//cart ICON PAGE
+
+// Update the event listener for the cart icon
+let cartPage = document.querySelector('cart') as HTMLElement;
+
+if (cartPage) {
+    cartPage.addEventListener('click', function () {
+        // Open the cart page in a new window or tab
+        window.open('cart.html');
+
+        // Call a function to dynamically populate the cart items
+        populateCartItems();
+    });
+}
+
+
+// Function to populate cart items in the cart page
+function populateCartItems() {
+    let cartItemsContainer = window.opener.document.getElementById('shoppingItems');
+
+    if (cartItemsContainer) {
+        let cart = JSON.parse(localStorage.getItem('orders') || '[]');
+
+        cartItemsContainer.innerHTML = '';
+
+        cart.forEach((order: Products) => {
+            const cartItemElement = document.createElement('div');
+            cartItemElement.textContent = `${order.productName} - $${order.price}`;
+            cartItemsContainer.appendChild(cartItemElement);
+        });
+    }
+}
