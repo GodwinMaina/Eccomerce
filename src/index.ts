@@ -2,7 +2,6 @@
 // Product Form to display for Admin
 let productForm = document.querySelector('#productForm') as HTMLFormElement | null;
 
-
 // Product Details
 let productName = document.getElementById('productName') as HTMLInputElement;
 let brand = document.getElementById('brand') as HTMLInputElement;
@@ -26,6 +25,7 @@ interface Products {
     imageUrl: string;
 }
 
+
 // Creating an array for putting our elements too.
 let productsArray: Products[] = [];
 
@@ -36,7 +36,6 @@ function deleteProduct(index: number) {
     if (index >= 0 && index < products.length) {
         products.splice(index, 1);
         localStorage.setItem('products', JSON.stringify(products));
-       
         // after delete refresh again and call this 
         displayProduct();
     }
@@ -44,7 +43,6 @@ function deleteProduct(index: number) {
 
 
 function editProduct(index: number) {
-
     // console.log("Button edit clicked!"); 
     let products = JSON.parse(localStorage.getItem('products') || '[]') as Products[];
 
@@ -54,7 +52,7 @@ function editProduct(index: number) {
         localStorage.setItem('products', JSON.stringify(products));
         displayProduct();
 
-        // edit at the form populate to form.
+        // edit at the form and the values populate  back to form.
         productName.value = editedProduct.productName || '';
         brand.value = editedProduct.brand || '';
         price.value = editedProduct.price || '';
@@ -64,16 +62,16 @@ function editProduct(index: number) {
 
         productCurrent = index;
     
-        // Scroll to the top of the form
-        // productForm.scrollIntoView({ behavior: 'smooth' });
     }
 };
 
-    //display products at Admin page
+    //displaying products at Admin page
     function displayProduct() {
-        let productContainer = document.querySelectorAll('.all-products') as NodeListOf<HTMLDivElement>;
+     
+        let productCan = document.querySelectorAll('.all-products') as NodeListOf<HTMLDivElement>;
 
-        for (const productElement of productContainer) {
+          //first clear to loop any innerHTML
+        for (const productElement of productCan) {
             if (productElement instanceof HTMLDivElement) {
                 productElement.innerHTML = '';
             }
@@ -85,7 +83,7 @@ function editProduct(index: number) {
         getProducts.forEach((product: Products, index: number) => {
                // Dynamically render products by inner HTML
             const allProduct = document.createElement('div');
-        
+             //innerHTML render to the ADMIN
             allProduct.innerHTML = `
             <div class="adminpanel">
            <div>
@@ -104,19 +102,22 @@ function editProduct(index: number) {
                 </div>    
             `;
 
-            if (productContainer.length > 0) {
-                productContainer[0].appendChild(allProduct); 
+               //condition to check before I append is the productCan with length more than 1 if true append 
+            if (productCan.length > 0) {
+                productCan[0].appendChild(allProduct); 
             }
         });
-    }
+    };
 
 
- // Event listener to Admin Form
+ // Event listener to Admin Form for adding products
  if (productForm) {
+   
     productForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
         let product = productName.value.trim() !== "" && brand.value.trim() !== "" && price.value.trim() !== "" && category.value.trim() !== "" && description.value.trim() !== "" && imageUrl.value.trim() !== "";
+        
         if (product) {
             let newProduct = {
                 id: productsArray.length + 1,
@@ -128,17 +129,20 @@ function editProduct(index: number) {
                 imageUrl: imageUrl.value.trim(),
             };
 
+            //check not null or undefined if not edit existing product
             if (productCurrent !== null && productCurrent !== undefined) {
-                // If productCurrent is not null or undefined, it means an existing product is being updated
                 productsArray.splice(productCurrent, 1, newProduct);
                 productCurrent = null; // Reset productCurrent after the update
-            } else {
-                // If productCurrent is null or undefined, it means a new product is being created
+            }
+             
+            else {
+                //if null or undefined then push the new product to the Array
                 productsArray.push(newProduct);
             }
-            // Save to local storage what is in form
-            localStorage.setItem("products", JSON.stringify(productsArray));
 
+            // Save to local storage what was in form
+            localStorage.setItem("products", JSON.stringify(productsArray));
+            
             // Clear form fields after save
             productName.value = "";
             brand.value = "";
@@ -146,16 +150,19 @@ function editProduct(index: number) {
             category.value = "";
             description.value = "";
             imageUrl.value = "";
+ 
+        };
 
-            displayProduct();
-        }
+        displayProduct();
     });
-}
+};
+
 
 displayProduct();
 
-//display to user products from local storage
+//function to display to user products from local storage/ same products in Admin
 function displayHome() {
+
     let productHomepage = document.getElementById("productHomepage") as HTMLDivElement | null;
 
     // Check if productHomepage is not null and has at least one element
@@ -164,7 +171,8 @@ function displayHome() {
 
         let products: Products[] = JSON.parse(localStorage.getItem('products') || '[]') as Products[];
         // Clear existing elements if exist but none
-        for (const product of products) {
+            
+        products.forEach((product: Products, index: number) => {
             const productElement = document.createElement('div');
 
             productElement.innerHTML = `
@@ -172,40 +180,51 @@ function displayHome() {
                     <img class="userImg" src="${product.imageUrl}" alt="Product Image">
                     <h2 class="orderName">${product.productName}</h2>
                     <p class="userPrice">$ ${product.price}</p>
-                    <p class="userPrice">id ${product.id}</p>
                     <!-- 
+                    <p class="userPrice">id ${product.id}</p>
                     <p class="userBrand" >Brand: ${product.brand}</p>
                     <p>Category: ${product.category}</p>
-                    -->
-                    <h3>${product.description}</h3>
+                   
+                <h3>${product.description}</h3>
+                -->
                     <button class="userBtn"  data-id="${product.id}" onclick="addToCart()">Buy Now</button>
                 </div>
                 
             `;
-            productHomepage.appendChild(productElement);
-        }
+
+            if (productHomepage) {
+                productHomepage.appendChild(productElement); 
+            };
+        })
     } 
+
         else {
             console.error("Error: Could not find #productHomepage element in the DOM.");
-        }
+        }     
 }
 
   // Call displayHome to render products on the homepage
 displayHome();
 
 
+//scroll to product div by click shop now
+const scrollBtn = document.querySelector('.shopbtn') as HTMLElement | null;
+const target = document.getElementById('productHomepage') as HTMLElement | null;
+if (scrollBtn && target) {
+    scrollBtn.addEventListener('click', function() {
+                // Scroll to the target div
+        target.scrollIntoView({ behavior: 'smooth' });
+            });
+    
+        } else {
+            console.error("Errrrrrr");
+        }
+    
+      
 
-//cart functionality
-
-// products.forEach((product: Products, index: number)=>{
-
-//     let name=Product
-// })
-
+//CART 
 function addToCart(productId:number) {
-    // Retrieve the existing cart from local storage
     let cart = JSON.parse(localStorage.getItem('orders') || '[]');
-
     let products = JSON.parse(localStorage.getItem('products') || '[]');
 
     // Check if the product is already in the cart
@@ -216,13 +235,16 @@ function addToCart(productId:number) {
         console.log('Product already in cart:', existingItem);
     } else {
         // Find the clicked product based on productId
-        const clickedProduct = products.find((product:Products) => product.id === productId);
+        const selectedProd = products.find((product:Products) => product.id === productId);
 
-        if (clickedProduct) {
+
+        if (selectedProd) {
+
             const order = {
-                id: clickedProduct.id,
-                name: clickedProduct.productName,
-                price: clickedProduct.price
+                id: selectedProd.id,
+                imageUrl:selectedProd.imageUrl,
+                productName: selectedProd.productName,
+                price: selectedProd.price
             };
 
             // Add the new item to the existing cart
@@ -232,146 +254,107 @@ function addToCart(productId:number) {
             localStorage.setItem('orders', JSON.stringify(cart));
         }
     }
+    
 }
 
 
-
-// Add event listeners dynamically to each button
-document.querySelectorAll('.userBtn').forEach(function (button: Element) {
+// Add event listeners dynamically to each product button
+const userShop = document.querySelectorAll('.userBtn');
+userShop.forEach((button)=> {
     button.addEventListener('click', function (this: HTMLButtonElement) {
-        let productIdString = this.getAttribute('data-id');
-        if (productIdString) {
-            let productId = parseInt(productIdString, 10);
+        let prodId = this.getAttribute('data-id');
+
+        if (prodId) {
+            let productId = parseInt(prodId, 10);
             addToCart(productId);
         }
+        //I called this so that whenever button is clicked to add item also cart count updates.
+        updateCartUI();
     });
 });
 
 
-//scroll to product div by click shop now
-const scrollBtn = document.querySelector('.shopbtn') as HTMLElement | null;
-const target = document.getElementById('productHomepage') as HTMLElement | null;
-    
-if (scrollBtn && target) {
-    scrollBtn.addEventListener('click', function() {
-                // Scroll to the target div
-        target.scrollIntoView({ behavior: 'smooth' });
-            });
-
-           
-        } else {
-            console.error("Error: Could not find one or more elements in the DOM.");
-        }
-    
-
-
-        let cartContainer = document.getElementById('cartContainer');
-
-        let cartImage = document.querySelector('.cart');      
-        if (cartImage) {
-            // You can manipulate the cart image element here if needed
-            console.log('Cart image found:', cartImage);
-        } else {
-            console.error('Cart image not found');
-        }
-
-
-
-        
-
-
-        // Function to update the UI with cart count and added products
+//update the UI cart count with added products
 function updateCartUI() {
+
     let cart = JSON.parse(localStorage.getItem('orders') || '[]');
 
     // Update cart count
-    const cartCountElement = document.getElementById('cart-count') as HTMLElement;
-    cartCountElement.textContent = cart.length.toString();
+    const cartCount = document.getElementById('cart-count') as HTMLElement;
+if (cartCount) {
+    cartCount.textContent = cart.length.toString();
+}
+
 
     // Display added products
-    const addedProductsContainer = document.createElement('div') as HTMLElement;
-    addedProductsContainer.innerHTML = '';
+    const addedProd = document.createElement('div') as HTMLElement;
+    addedProd.innerHTML = '';
 
     cart.forEach((order:Products) => {
-        const productElement = document.createElement('div');
-        productElement.textContent = `${order.productName} - $${order.price}`;
-        addedProductsContainer.appendChild(productElement);
+        const productB = document.createElement('div');
+        productB.textContent = `${order.productName}  ${order.price}`;
+        addedProd.appendChild(productB);
     });
-}
 
-// Function to add product to the cart
-function addToCarts(productId:number) {
-    let cart = JSON.parse(localStorage.getItem('orders') || '[]');
-    let products = JSON.parse(localStorage.getItem('products') || '[]');
-
-    const existingItem = cart.find((item:Products) => item.id === productId);
-
-    if (existingItem) {
-        console.log('Product already in cart:', existingItem);
-    } else {
-        const clickedProduct = products.find((product:Products) => product.id === productId);
-
-        if (clickedProduct) {
-            const order = {
-                id: clickedProduct.id,
-                name: clickedProduct.productName,
-                price: clickedProduct.price
-            };
-
-            cart.push(order);
-            localStorage.setItem('orders', JSON.stringify(cart));
-
-            // Update the UI after adding to the cart
-            updateCartUI();
-        }
+    const cartIcon = document.querySelector('.cartIcon');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', () => {
+            window.location.href = 'cart.html';
+        });
     }
-}
+};
 
 // Initial UI update on page load
 updateCartUI();
 
-// Add event listeners dynamically to each button
-document.querySelectorAll('.userBtn').forEach(function (button) {
-    button.addEventListener('click', function (this: HTMLButtonElement) {
-        let productIdString = this.getAttribute('data-id');
-        if (productIdString) {
-            let productId = parseInt(productIdString, 10);
-            addToCarts(productId);
-        }
-    });
-});
 
+ 
+const cartPaged = document.getElementById('displayCart') as HTMLElement;
+// Function to display cart contents on the cart page
+function displayCart() {
 
-
-//cart ICON PAGE
-
-// Update the event listener for the cart icon
-let cartPage = document.querySelector('cart') as HTMLElement;
-
-if (cartPage) {
-    cartPage.addEventListener('click', function () {
-        // Open the cart page in a new window or tab
-        window.open('cart.html');
-
-        // Call a function to dynamically populate the cart items
-        populateCartItems();
-    });
-}
-
-
-// Function to populate cart items in the cart page
-function populateCartItems() {
-    let cartItemsContainer = window.opener.document.getElementById('shoppingItems');
-
-    if (cartItemsContainer) {
+    if (cartPaged) {
+        
+        cartPaged.innerHTML = '';
         let cart = JSON.parse(localStorage.getItem('orders') || '[]');
-
-        cartItemsContainer.innerHTML = '';
-
+        
         cart.forEach((order: Products) => {
-            const cartItemElement = document.createElement('div');
-            cartItemElement.textContent = `${order.productName} - $${order.price}`;
-            cartItemsContainer.appendChild(cartItemElement);
+            const cartInfo = document.createElement('div');
+
+            cartInfo.innerHTML = `
+
+            <img src="${order.imageUrl}" alt="Product Image">  <br> <br>
+            
+            ${order.productName}  <br><br>
+
+            
+           $ ${order.price} <br><br>
+
+            <button onclick=>plus</button>
+            <button>minus</button>
+            
+            
+            `;
+            cartPaged.appendChild(cartInfo);
         });
+
+    updateCartUI();
     }
 }
+
+// Call the function to display cart contents when the cart page loads
+displayCart();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
